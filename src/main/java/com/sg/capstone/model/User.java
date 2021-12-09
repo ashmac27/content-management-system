@@ -25,7 +25,7 @@ public class User {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
+    }git 
 
     public String getFirstName() {
         return firstName;
@@ -66,5 +66,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(userId, firstName, lastName, role);
     }
-    
+
 }
