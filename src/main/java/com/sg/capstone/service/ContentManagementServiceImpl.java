@@ -111,6 +111,6 @@ public class ContentManagementServiceImpl implements ContentManagementService {
 
     @Override
     public User addUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userDAO.addUser(user);
     }
 }
