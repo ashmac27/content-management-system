@@ -1,17 +1,16 @@
 package com.sg.capstone.data;
 
 import com.sg.capstone.model.Post;
-import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class PostDAODatabase implements PostDAO {
@@ -21,7 +20,7 @@ public class PostDAODatabase implements PostDAO {
 
     // Adds a post
     @Override
-    public Post addPost(Post post){
+    public Post addPost(Post post) {
         final String ADD_POST = "INSERT INTO posts " +
                 "(PostId, Title, Content, DateAdded, Approved, PublishDate, ExpireDate, UserId) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -31,15 +30,15 @@ public class PostDAODatabase implements PostDAO {
 
     // Gets list of all posts
     @Override
-    public List<Post> getAllPosts(){
+    public List<Post> getAllPosts() {
         final String SELECT_ALL_POSTS = "SELECT * " + "FROM posts";
-        List<Post> allPosts = jdbc.query(SELECT_ALL_POSTS, new PostMapper() );
+        List<Post> allPosts = jdbc.query(SELECT_ALL_POSTS, new PostMapper());
         return allPosts;
     }
 
     // Gets list of all posts
     @Override
-    public List<Post> getExpiredPosts(LocalDateTime expireDate){
+    public List<Post> getExpiredPosts(LocalDateTime expireDate) {
         /*
 
         final String SELECT_EXPIRED_POSTS = "SELECT * " + "FROM posts" +"WHERE ExpireDate ";
@@ -47,33 +46,41 @@ public class PostDAODatabase implements PostDAO {
         return allPosts;
         */
 
-        List<Post> getPostsThatCanBeExpired = getAllPosts().stream().filter(post-> post.getExpireDate() != null).toList();
+        List<Post> getPostsThatCanBeExpired = getAllPosts().stream()
+                .filter(post -> post.getExpireDate() != null)
+                .collect(Collectors.toList());
 
-        return getPostsThatCanBeExpired.stream().filter(post-> post.getExpireDate().isBefore(expireDate)).toList();
+        return getPostsThatCanBeExpired.stream()
+                .filter(post -> post.getExpireDate().isBefore(expireDate))
+                .collect(Collectors.toList());
     }
 
     // Gets list of all posts
     @Override
-    public List<Post> getUnexpiredPosts(LocalDateTime expireDate){
+    public List<Post> getUnexpiredPosts(LocalDateTime expireDate) {
 
-        List<Post> getPostsThatCanBeExpired = getAllPosts().stream().filter(post-> post.getExpireDate() != null).toList();
+        List<Post> getPostsThatCanBeExpired = getAllPosts().stream()
+                .filter(post -> post.getExpireDate() != null)
+                .collect(Collectors.toList());
 
-        return getPostsThatCanBeExpired.stream().filter(post-> post.getExpireDate().isAfter(expireDate)).toList();
+        return getPostsThatCanBeExpired.stream()
+                .filter(post -> post.getExpireDate().isAfter(expireDate))
+                .collect(Collectors.toList());
     }
 
     // Gets posts by its id
     @Override
-    public Post getPostById(int postId){
+    public Post getPostById(int postId) {
         final String SELECT_POST = "SELECT * " +
                 "FROM posts " +
                 "WHERE postId = ?";
-        Post post = jdbc.queryForObject(SELECT_POST, new PostMapper(), postId );
+        Post post = jdbc.queryForObject(SELECT_POST, new PostMapper(), postId);
         return post;
     }
 
     // Edits a post
     @Override
-    public Boolean editPost(int postId, Post post){
+    public Boolean editPost(int postId, Post post) {
         final String UPDATE_POST = "UPDATE posts SET " +
                 "Title = ?, " +
                 "Content = ?, " +
@@ -91,13 +98,13 @@ public class PostDAODatabase implements PostDAO {
                 post.getPublishDate(),
                 post.getExpireDate(),
                 post.getUserId(),
-                postId) >0;
+                postId) > 0;
 
     }
 
     // Deletes a post
     @Override
-    public Boolean deletePost(int postId){
+    public Boolean deletePost(int postId) {
         final String DELETE_POST = "DELETE FROM posts " +
                 "WHERE PostId = ?";
         return jdbc.update(DELETE_POST, postId) > 0;
