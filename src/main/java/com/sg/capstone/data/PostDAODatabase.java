@@ -1,11 +1,14 @@
 package com.sg.capstone.data;
 
 import com.sg.capstone.model.Post;
+import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +35,30 @@ public class PostDAODatabase implements PostDAO {
         final String SELECT_ALL_POSTS = "SELECT * " + "FROM posts";
         List<Post> allPosts = jdbc.query(SELECT_ALL_POSTS, new PostMapper() );
         return allPosts;
+    }
+
+    // Gets list of all posts
+    @Override
+    public List<Post> getExpiredPosts(LocalDateTime expireDate){
+        /*
+
+        final String SELECT_EXPIRED_POSTS = "SELECT * " + "FROM posts" +"WHERE ExpireDate ";
+        List<Post> allPosts = jdbc.query(SELECT_EXPIRED_POSTS, new PostMapper() );
+        return allPosts;
+        */
+
+        List<Post> getPostsThatCanBeExpired = getAllPosts().stream().filter(post-> post.getExpireDate() != null).toList();
+
+        return getPostsThatCanBeExpired.stream().filter(post-> post.getExpireDate().isBefore(expireDate)).toList();
+    }
+
+    // Gets list of all posts
+    @Override
+    public List<Post> getUnexpiredPosts(LocalDateTime expireDate){
+
+        List<Post> getPostsThatCanBeExpired = getAllPosts().stream().filter(post-> post.getExpireDate() != null).toList();
+
+        return getPostsThatCanBeExpired.stream().filter(post-> post.getExpireDate().isAfter(expireDate)).toList();
     }
 
     // Gets posts by its id
