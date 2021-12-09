@@ -1,4 +1,4 @@
 package com.sg.capstone.model;
 
-public class Hashtags {
+public class Hashtag {
 }
