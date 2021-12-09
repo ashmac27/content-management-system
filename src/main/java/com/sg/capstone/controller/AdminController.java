@@ -40,7 +40,7 @@ public class AdminController {
         return null;
     }
 
-    @DeleteMapping("/editpost/{postId}")
+    @DeleteMapping("/deletepost/{postId}")
     public Boolean deletePost() {
         return null;
     }
