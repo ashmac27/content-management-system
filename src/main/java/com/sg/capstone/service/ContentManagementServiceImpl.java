@@ -54,12 +54,19 @@ public class ContentManagementServiceImpl implements ContentManagementService {
 
     @Override
     public boolean editPost(Post post, String[] tags) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        postDAO.getPostById(post.getPostId());
+        for(String tag : tags){
+            Hashtag ht = new Hashtag();
+            ht.setPostId(post.getPostId());
+            ht.setTag(tag);
+            hashtagDAO.add(ht);
+        }
+        return postDAO.editPost(post.getPostId(), post);
     }
 
     @Override
     public boolean deletePostById(int postId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return postDAO.deletePost(postId);
     }
 
     @Override
