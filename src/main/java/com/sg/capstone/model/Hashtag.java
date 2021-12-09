@@ -9,6 +9,14 @@ public class Hashtag {
     private int postId;
     private String tag;
 
+    public Hashtag() {
+    }
+
+    public Hashtag(int postId, String tag) {
+        this.postId = postId;
+        this.tag = tag;
+    }
+
     // Gets the post id
     public int getPostId() {
         return postId;
