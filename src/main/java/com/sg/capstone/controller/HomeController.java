@@ -3,9 +3,12 @@ package com.sg.capstone.controller;
 import com.sg.capstone.model.Post;
 import com.sg.capstone.service.ContentManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
-import com.sg.capstone.service.ContentManagementService;
 
 /**
  * This controller contains the different endpoints used by a regular user
@@ -15,7 +18,7 @@ import com.sg.capstone.service.ContentManagementService;
 public class HomeController {
 
     @Autowired
-    ContentManagementService service;
+    private ContentManagementService service;
 
     // Gets all the valid posts
     @GetMapping("/posts")

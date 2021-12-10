@@ -38,7 +38,7 @@ public class AdminController {
     // Gets all expired posts from the system
     @GetMapping("/posts/expired")
     public List<Post> getAllExpiredPosts() {
-        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate()!=null && post.getExpireDate().isBefore(LocalDateTime.now())).collect(Collectors.toList());
+        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate() != null && post.getExpireDate().isBefore(LocalDateTime.now())).collect(Collectors.toList());
     }
 
     // Gets a posts from the system by id
@@ -52,9 +52,9 @@ public class AdminController {
     public Post addPost(@RequestBody Post post) {
         Matcher m = Pattern.compile("(#\\S+)").matcher(post.getContent());
         List<String> tagList = new ArrayList<String>();
-        while(m.find()) {
+        while (m.find()) {
             String find = m.group();
-            if(!tagList.contains(find.toLowerCase())) tagList.add(find.substring(1));
+            if (!tagList.contains(find.toLowerCase())) tagList.add(find.substring(1));
         }
         post.setApproved(true);
         return service.addPost(post, tagList.toArray(new String[0]));
@@ -65,9 +65,9 @@ public class AdminController {
     public Boolean editPost(@RequestBody Post post) {
         Matcher m = Pattern.compile("(#\\S+)").matcher(post.getContent());
         List<String> tagList = new ArrayList<String>();
-        while(m.find()) {
+        while (m.find()) {
             String find = m.group();
-            if(!tagList.contains(find.toLowerCase())) tagList.add(find);
+            if (!tagList.contains(find.toLowerCase())) tagList.add(find);
         }
         post.setApproved(false);
         return service.editPost(post, tagList.toArray(new String[0]));

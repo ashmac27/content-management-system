@@ -1,24 +1,20 @@
 package com.sg.capstone.data;
 
 import com.sg.capstone.model.Post;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.jdbc.core.SqlParameterValue;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 
+/**
+ * This class represents the DAO that is responsible for database related functions to Posts
+ */
 @Repository
 public class PostDAODatabase implements PostDAO {
 
@@ -40,17 +36,17 @@ public class PostDAODatabase implements PostDAO {
             statement.setTimestamp(3, Timestamp.valueOf(post.getDateAdded()));
             statement.setBoolean(4, post.isApproved());
             // These dates can be null
-            if(post.getPublishDate()==null) {
+            if (post.getPublishDate() == null) {
                 statement.setNull(5, Types.NULL);
             } else {
                 statement.setTimestamp(5, Timestamp.valueOf(post.getPublishDate()));
             }
-            if(post.getExpireDate()==null) {
+            if (post.getExpireDate() == null) {
                 statement.setNull(6, Types.NULL);
             } else {
                 statement.setTimestamp(6, Timestamp.valueOf(post.getExpireDate()));
             }
-            statement.setInt(7,post.getUserId());
+            statement.setInt(7, post.getUserId());
             return statement;
         }, keyHolder);
         // Gets record with all values generated
@@ -68,17 +64,12 @@ public class PostDAODatabase implements PostDAO {
     // Gets list of all posts
     @Override
     public List<Post> getExpiredPosts(LocalDateTime expireDate) {
-        /*
-
-        final String SELECT_EXPIRED_POSTS = "SELECT * " + "FROM posts" +"WHERE ExpireDate ";
-        List<Post> allPosts = jdbc.query(SELECT_EXPIRED_POSTS, new PostMapper() );
-        return allPosts;
-        */
-
+        // Gets the list of post that can be expired
         List<Post> getPostsThatCanBeExpired = getAllPosts().stream()
                 .filter(post -> post.getExpireDate() != null)
                 .collect(Collectors.toList());
 
+        // Gets a list of post that expired
         return getPostsThatCanBeExpired.stream()
                 .filter(post -> post.getExpireDate().isBefore(expireDate))
                 .collect(Collectors.toList());
@@ -87,17 +78,18 @@ public class PostDAODatabase implements PostDAO {
     // Gets list of all posts
     @Override
     public List<Post> getUnexpiredPosts(LocalDateTime expireDate) {
-
+        // Gets the list of post that can expired
         List<Post> getPostsThatCanBeExpired = getAllPosts().stream()
                 .filter(post -> post.getExpireDate() != null)
                 .collect(Collectors.toList());
 
+        // Gets the list of post that are not expired
         return getPostsThatCanBeExpired.stream()
                 .filter(post -> post.getExpireDate().isAfter(expireDate))
                 .collect(Collectors.toList());
     }
 
-    // Gets posts by its id
+    // Get posts by its id
     @Override
     public Post getPostById(int postId) {
         final String SELECT_POST = "SELECT * " +
@@ -140,7 +132,6 @@ public class PostDAODatabase implements PostDAO {
     }
 
     public final static class PostMapper implements RowMapper<Post> {
-
         @Override
         public Post mapRow(ResultSet rs, int i) throws SQLException {
             Post post = new Post();
@@ -152,10 +143,14 @@ public class PostDAODatabase implements PostDAO {
             // publishDate and ExpireDate can be null
             try {
                 post.setPublishDate(rs.getTimestamp("PublishDate").toLocalDateTime());
-            } catch(Exception e) {post.setPublishDate(null);}
+            } catch (Exception e) {
+                post.setPublishDate(null);
+            }
             try {
                 post.setExpireDate(rs.getTimestamp("ExpireDate").toLocalDateTime());
-            } catch(Exception e) {post.setExpireDate(null);}
+            } catch (Exception e) {
+                post.setExpireDate(null);
+            }
             post.setUserId(rs.getInt("UserId"));
             return post;
         }

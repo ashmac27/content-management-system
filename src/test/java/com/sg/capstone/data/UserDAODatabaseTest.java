@@ -6,10 +6,11 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -20,7 +21,7 @@ class UserDAODatabaseTest {
     private UserDAO userDAO;
 
     @BeforeEach
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
     }
 
     @Test
@@ -44,7 +45,7 @@ class UserDAODatabaseTest {
         List<User> allUsers = userDAO.getAllUsers();
 
         //Assert
-        Assert.assertEquals(2,allUsers.size());
+        Assert.assertEquals(2, allUsers.size());
     }
 
     @Test
@@ -77,7 +78,7 @@ class UserDAODatabaseTest {
         User addedUser = userDAO.addUser(user);
 
         //Assert
-        Assert.assertEquals(user,addedUser);
+        Assert.assertEquals(user, addedUser);
     }
 
     @Test
@@ -95,12 +96,12 @@ class UserDAODatabaseTest {
 
         // Act
         user.setFirstName("Different");
-        boolean isUserEdited = userDAO.editUser(user.getUserId(),user);
+        boolean isUserEdited = userDAO.editUser(user.getUserId(), user);
         User getUserFromDao = userDAO.getUserById(user.getUserId());
 
         //Assert
         Assert.assertTrue(isUserEdited);
-        Assert.assertEquals(user.getUserId(),getUserFromDao.getUserId());
+        Assert.assertEquals(user.getUserId(), getUserFromDao.getUserId());
     }
 
     @Test
