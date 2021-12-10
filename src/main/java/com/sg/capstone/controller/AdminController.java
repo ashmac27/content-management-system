@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     // Gets a posts from the system by id
-    @PostMapping("/posts/{postId}")
+    @GetMapping("/posts/{postId}")
     public Post getPostById(@PathVariable int postId) {
         return service.getPostById(postId, false, false, false, null);
     }
@@ -54,9 +54,9 @@ public class AdminController {
         List<String> tagList = new ArrayList<String>();
         while(m.find()) {
             String find = m.group();
-            if(!tagList.contains(find.toLowerCase())) tagList.add(find);
+            if(!tagList.contains(find.toLowerCase())) tagList.add(find.substring(1));
         }
-        post.setApproved(false);
+        post.setApproved(true);
         return service.addPost(post, tagList.toArray(new String[0]));
     }
 

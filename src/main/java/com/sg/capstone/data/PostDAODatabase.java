@@ -1,6 +1,8 @@
 package com.sg.capstone.data;
 
 import com.sg.capstone.model.Post;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,9 +10,14 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 @Repository
 public class PostDAODatabase implements PostDAO {
@@ -21,11 +28,33 @@ public class PostDAODatabase implements PostDAO {
     // Adds a post
     @Override
     public Post addPost(Post post) {
+        post.setDateAdded(LocalDateTime.now());
         final String ADD_POST = "INSERT INTO posts " +
-                "(PostId, Title, Content, DateAdded, Approved, PublishDate, ExpireDate, UserId) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbc.update(ADD_POST, post.getPostId(), post.getTitle(), post.getContent(), post.getDateAdded(), post.isApproved(), post.getPublishDate(), post.getExpireDate(), post.getUserId());
-        return post;
+                "(Title, Content, DateAdded, Approved, PublishDate, ExpireDate, UserId) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update((Connection conn) -> {
+            PreparedStatement statement = conn.prepareStatement(ADD_POST, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, post.getTitle());
+            statement.setString(2, post.getContent());
+            statement.setTimestamp(3, Timestamp.valueOf(post.getDateAdded()));
+            statement.setBoolean(4, post.isApproved());
+            // These dates can be null
+            if(post.getPublishDate()==null) {
+                statement.setNull(5, Types.NULL);
+            } else {
+                statement.setTimestamp(5, Timestamp.valueOf(post.getPublishDate()));
+            }
+            if(post.getExpireDate()==null) {
+                statement.setNull(6, Types.NULL);
+            } else {
+                statement.setTimestamp(6, Timestamp.valueOf(post.getExpireDate()));
+            }
+            statement.setInt(7,post.getUserId());
+            return statement;
+        }, keyHolder);
+        // Gets record with all values generated
+        return getPostById(keyHolder.getKey().intValue());
     }
 
     // Gets list of all posts
@@ -95,8 +124,9 @@ public class PostDAODatabase implements PostDAO {
                 post.getContent(),
                 post.getDateAdded(),
                 post.isApproved(),
-                post.getPublishDate(),
-                post.getExpireDate(),
+                // These parameters can be null, which needs to be handled
+                (post.getPublishDate()==null) ? new SqlParameterValue(Types.NULL,"PublishDate") : post.getPublishDate(),
+                (post.getExpireDate()==null) ? new SqlParameterValue(Types.NULL,"ExpireDate") : post.getExpireDate(),
                 post.getUserId(),
                 postId) > 0;
 

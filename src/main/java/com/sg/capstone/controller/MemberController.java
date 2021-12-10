@@ -59,7 +59,7 @@ public class MemberController {
         List<String> tagList = new ArrayList<String>();
         while(m.find()) {
             String find = m.group();
-            if(!tagList.contains(find.toLowerCase())) tagList.add(find);
+            if(!tagList.contains(find.toLowerCase())) tagList.add(find.substring(1));
         }
         post.setApproved(false);
         return service.addPost(post, tagList.toArray(new String[0]));

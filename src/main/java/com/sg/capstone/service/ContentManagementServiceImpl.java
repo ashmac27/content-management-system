@@ -88,7 +88,7 @@ public class ContentManagementServiceImpl implements ContentManagementService {
         Post addedPost = postDAO.addPost(post);
         for (String tag : tags) {
             Hashtag hashtag = new Hashtag();
-            hashtag.setPostId(post.getPostId());
+            hashtag.setPostId(addedPost.getPostId());
             hashtag.setTag(tag);
             hashtagDAO.add(hashtag);
         }
