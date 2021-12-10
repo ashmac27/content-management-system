@@ -40,10 +40,12 @@ public class UserDAODatabase implements UserDAO{
     @Override
     public User addUser(User user){
         final String ADD_USER = "INSERT INTO users " +
-                "(UserId, FirstName, LastName, `Role`) " +
-                "VALUES (?, ?, ?, ?)";
-        jdbc.update(ADD_USER, user.getUserId(), user.getFirstName(), user.getLastName(), user.getRole());
+                "(FirstName, LastName, `Role`) " +
+                "VALUES (?, ?, ?)";
+        jdbc.update(ADD_USER, user.getFirstName(), user.getLastName(), user.getRole());
 
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        user.setUserId(newId);
         return user;
     }
 

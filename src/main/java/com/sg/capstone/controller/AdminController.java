@@ -66,4 +66,10 @@ public class AdminController {
     public User adduser() {
         return null;
     }
+
+    // Edits a user from the system
+    @PostMapping("/edituser/{userId}")
+    public User editUser() {
+        return null;
+    }
 }
