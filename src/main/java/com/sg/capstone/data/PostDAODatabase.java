@@ -121,8 +121,13 @@ public class PostDAODatabase implements PostDAO {
             post.setContent(rs.getString("Content"));
             post.setDateAdded(rs.getTimestamp("DateAdded").toLocalDateTime());
             post.setApproved(rs.getBoolean("Approved"));
-            post.setPublishDate(rs.getTimestamp("PublishDate").toLocalDateTime());
-            post.setExpireDate(rs.getTimestamp("ExpireDate").toLocalDateTime());
+            // publishDate and ExpireDate can be null
+            try {
+                post.setPublishDate(rs.getTimestamp("PublishDate").toLocalDateTime());
+            } catch(Exception e) {post.setPublishDate(null);}
+            try {
+                post.setExpireDate(rs.getTimestamp("ExpireDate").toLocalDateTime());
+            } catch(Exception e) {post.setExpireDate(null);}
             post.setUserId(rs.getInt("UserId"));
             return post;
         }

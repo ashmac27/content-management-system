@@ -38,7 +38,7 @@ public class AdminController {
     // Gets all expired posts from the system
     @GetMapping("/posts/expired")
     public List<Post> getAllExpiredPosts() {
-        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate().isAfter(LocalDateTime.now())).collect(Collectors.toList());
+        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate()!=null && post.getExpireDate().isBefore(LocalDateTime.now())).collect(Collectors.toList());
     }
 
     // Gets a posts from the system by id
