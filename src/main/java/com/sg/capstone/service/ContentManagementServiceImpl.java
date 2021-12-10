@@ -45,7 +45,7 @@ public class ContentManagementServiceImpl implements ContentManagementService {
                 if(tagList.contains(tag.toLowerCase())) return true;
             }
             return false;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     @Override

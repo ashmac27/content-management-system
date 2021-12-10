@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,7 @@ public class MemberController {
     @GetMapping("/posts/expired")
     public List<Post> getAllExpiredPosts() {
         // Filter out posts that aren't expired
-        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate().isAfter(LocalDateTime.now())).toList();
+        return service.getAllPosts(false, true, false, null).stream().filter(post -> post.getExpireDate().isAfter(LocalDateTime.now())).collect(Collectors.toList());
     }
 
     // Gets a posts from the system by id
