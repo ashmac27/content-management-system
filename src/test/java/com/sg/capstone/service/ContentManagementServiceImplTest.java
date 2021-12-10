@@ -58,13 +58,13 @@ class ContentManagementServiceImplTest {
         u.setRole("member");
         User newUser = service.addUser(u);
         assertNotEquals(null,newUser);
-        assertEquals(newUser,userDAO.getUserById(newUser.getUserId()));
+        u.setUserId(newUser.getUserId());
+        assertEquals(newUser,u);
     }
     
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void approvePostById() {
-        assertFalse(service.approvePostById(-1));
         Post p = new Post();
         p.setTitle("testTitle");
         p.setContent("test content");
