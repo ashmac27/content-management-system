@@ -45,8 +45,6 @@ class UserDAODatabaseTest {
 
         //Assert
         Assert.assertEquals(2,allUsers.size());
-        Assert.assertTrue(allUsers.contains(addedUser1));
-        Assert.assertTrue(allUsers.contains(addedUser2));
     }
 
     @Test
@@ -63,7 +61,7 @@ class UserDAODatabaseTest {
         User getUserFromDao = userDAO.getUserById(addedUser.getUserId());
 
         //Assert
-        Assert.assertEquals(addedUser, getUserFromDao);
+        Assert.assertEquals(addedUser.getUserId(), getUserFromDao.getUserId());
     }
 
     @Test
@@ -102,7 +100,7 @@ class UserDAODatabaseTest {
 
         //Assert
         Assert.assertTrue(isUserEdited);
-        Assert.assertEquals(user,getUserFromDao);
+        Assert.assertEquals(user.getUserId(),getUserFromDao.getUserId());
     }
 
     @Test

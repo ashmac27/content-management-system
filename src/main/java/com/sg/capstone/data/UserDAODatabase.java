@@ -54,7 +54,7 @@ public class UserDAODatabase implements UserDAO{
     public Boolean editUser(int userId, User user){
         final String UPDATE_USER = "UPDATE users SET " +
                 "FirstName = ?, " +
-                "LasName = ?, " +
+                "LastName = ?, " +
                 "`Role` = ? " +
                 "WHERE userId = ?";
         return jdbc.update(UPDATE_USER,
