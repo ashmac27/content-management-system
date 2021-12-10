@@ -17,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 class ContentManagementServiceImplTest {
@@ -97,18 +99,36 @@ class ContentManagementServiceImplTest {
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void editPost() {
-        
+        Post p = service.getAllPosts(false,false,false,null).get(0);
+        Post newPost = service.getPostById(p.getPostId(), false, false, false, null);
+        assertEquals(p,newPost);
+        newPost.setContent(newPost.getContent()+" addition to the post");
+        assertTrue(service.editPost(newPost, null));
+        assertFalse(p.equals(newPost));
+        p.setContent(newPost.getContent());
+        assertEquals(newPost,p);
     }
     
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void getAllPosts() {
-
+        List<Post> allPosts = service.getAllPosts(false, false, false, null);
+        service.getAllPosts(false, false, false, null).forEach(post -> {
+            // Asserts that each post is in the list and the DAO
+            assertTrue(service.deletePostById(post.getPostId()));
+            assertTrue(allPosts.remove(post));
+        });
+        // Makes sure there are no lingering posts
+        assertEquals(0,allPosts.size());
     }
     
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void getPostById() {
-        
+        List<Post> allPosts = service.getAllPosts(false, false, false, null);
+        assertThrows(Exception.class, () -> service.getPostById(-1, false, false, false, null));
+        for(Post p : allPosts) {
+            assertEquals(p, service.getPostById(p.getPostId(), false, false, false, null));
+        }
     }
 }
