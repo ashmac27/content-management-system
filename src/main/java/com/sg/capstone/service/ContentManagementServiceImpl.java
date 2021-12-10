@@ -86,11 +86,13 @@ public class ContentManagementServiceImpl implements ContentManagementService {
     @Override
     public Post addPost(Post post, String[] tags) {
         Post addedPost = postDAO.addPost(post);
-        for (String tag : tags) {
-            Hashtag hashtag = new Hashtag();
-            hashtag.setPostId(addedPost.getPostId());
-            hashtag.setTag(tag);
-            hashtagDAO.add(hashtag);
+        if(tags!=null) {
+            for (String tag : tags) {
+                Hashtag hashtag = new Hashtag();
+                hashtag.setPostId(addedPost.getPostId());
+                hashtag.setTag(tag);
+                hashtagDAO.add(hashtag);
+            }
         }
         return addedPost;
     }
@@ -98,11 +100,13 @@ public class ContentManagementServiceImpl implements ContentManagementService {
     @Override
     public boolean editPost(Post post, String[] tags) {
         postDAO.getPostById(post.getPostId());
-        for(String tag : tags){
-            Hashtag ht = new Hashtag();
-            ht.setPostId(post.getPostId());
-            ht.setTag(tag);
-            hashtagDAO.add(ht);
+        if(tags!=null) {
+            for (String tag : tags) {
+                Hashtag hashtag = new Hashtag();
+                hashtag.setPostId(post.getPostId());
+                hashtag.setTag(tag);
+                hashtagDAO.add(hashtag);
+            }
         }
         return postDAO.editPost(post.getPostId(), post);
     }
