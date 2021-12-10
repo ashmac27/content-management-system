@@ -1,5 +1,6 @@
 package com.sg.capstone.data;
 
+import com.sg.capstone.TestApplicationConfiguration;
 import com.sg.capstone.model.Post;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,9 +8,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
 
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = TestApplicationConfiguration.class)
 class PostDAODatabaseTest {
     
     @Autowired

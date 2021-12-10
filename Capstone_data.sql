@@ -18,14 +18,14 @@ VALUES
 
 INSERT INTO hashtags (PostId, Tag)
 VALUES
-(1 , "#Hamburger"),
-(1 , "#GoldFlakes"),
-(1 , "#SuperFancy"),
-(1 , "#IAmRich"),
-(4 , "#SaveTheBees"),
-(6 , "#SchoolIsGreat"),
-(7 , "#JavaIsTheBest"),
-(7 , "#PythonIsTheBest"),
-(8 , "#ILuvLinux"),
-(8 , "#IUseArchBtw"),
-(8 , "#InstallGentoo");
+(1 , "Hamburger"),
+(1 , "GoldFlakes"),
+(1 , "SuperFancy"),
+(1 , "IAmRich"),
+(4 , "SaveTheBees"),
+(6 , "SchoolIsGreat"),
+(7 , "JavaIsTheBest"),
+(7 , "PythonIsTheBest"),
+(8 , "ILuvLinux"),
+(8 , "IUseArchBtw"),
+(8 , "InstallGentoo");

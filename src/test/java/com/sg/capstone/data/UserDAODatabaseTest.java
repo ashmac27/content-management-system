@@ -24,7 +24,7 @@ class UserDAODatabaseTest {
     }
 
     @Test
-    @Sql(scripts = {"Capstone_Schema.sql"})
+    @Sql(scripts = {"file:Capstone_Schema.sql"})
     public void getAllUsers() {
         // Arrange
         User user1 = new User();
@@ -50,7 +50,7 @@ class UserDAODatabaseTest {
     }
 
     @Test
-    @Sql(scripts = {"Capstone_Schema.sql"})
+    @Sql(scripts = {"file:Capstone_Schema.sql"})
     public void getUserById() {
         // Arrange
         User user = new User();
@@ -67,7 +67,7 @@ class UserDAODatabaseTest {
     }
 
     @Test
-    @Sql(scripts = {"Capstone_Schema.sql"})
+    @Sql(scripts = {"file:Capstone_Schema.sql"})
     public void addUser() {
         // Arrange
         User user = new User();
@@ -83,7 +83,7 @@ class UserDAODatabaseTest {
     }
 
     @Test
-    @Sql(scripts = {"Capstone_Schema.sql"})
+    @Sql(scripts = {"file:Capstone_Schema.sql"})
     public void editUser() {
         // Arrange
         User user = new User();
@@ -106,7 +106,7 @@ class UserDAODatabaseTest {
     }
 
     @Test
-    @Sql(scripts = {"Capstone_Schema.sql"})
+    @Sql(scripts = {"file:Capstone_Schema.sql"})
     public void deleteUser() {
         // Arrange
         User user = new User();

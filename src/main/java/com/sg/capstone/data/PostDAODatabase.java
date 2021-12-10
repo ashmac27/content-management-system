@@ -123,8 +123,8 @@ public class PostDAODatabase implements PostDAO {
                 post.getContent(),
                 post.isApproved(),
                 // These parameters can be null, which needs to be handled
-                (post.getPublishDate()==null) ? new SqlParameterValue(Types.NULL,"PublishDate") : post.getPublishDate(),
-                (post.getExpireDate()==null) ? new SqlParameterValue(Types.NULL,"ExpireDate") : post.getExpireDate(),
+                post.getPublishDate(),
+                post.getExpireDate(),
                 post.getUserId(),
                 postId) > 0;
 
