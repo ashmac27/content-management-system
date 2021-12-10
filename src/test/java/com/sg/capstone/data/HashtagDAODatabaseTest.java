@@ -38,7 +38,7 @@ class HashtagDAODatabaseTest {
             assertTrue(hashtagDAO.delete(tag));
         });
         // DAO should be empty
-        assertEquals(0,hashtagDAO.getAllHashtags());
+        assertEquals(0,hashtagDAO.getAllHashtags().size());
         
         allTags.forEach(tag -> hashtagDAO.add(tag));
         
