@@ -113,7 +113,6 @@ public class PostDAODatabase implements PostDAO {
         final String UPDATE_POST = "UPDATE posts SET " +
                 "Title = ?, " +
                 "Content = ?, " +
-                "DateAdded = ? " +
                 "Approved = ?, " +
                 "PublishDate = ?, " +
                 "ExpireDate = ?, " +
@@ -122,7 +121,6 @@ public class PostDAODatabase implements PostDAO {
         return jdbc.update(UPDATE_POST,
                 post.getTitle(),
                 post.getContent(),
-                post.getDateAdded(),
                 post.isApproved(),
                 // These parameters can be null, which needs to be handled
                 (post.getPublishDate()==null) ? new SqlParameterValue(Types.NULL,"PublishDate") : post.getPublishDate(),
