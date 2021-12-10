@@ -2,6 +2,9 @@ package com.sg.capstone.model;
 
 import java.util.Objects;
 
+/**
+ * This class represents a user entity
+ */
 public class User {
 
     private int userId;

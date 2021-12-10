@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * This class represents the DAO that is responsible for database related functions to users
+ */
 @Repository
 public class UserDAODatabase implements UserDAO {
 

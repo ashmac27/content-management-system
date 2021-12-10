@@ -2,11 +2,14 @@ package com.sg.capstone.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class represents a post entity
+ */
 public class Post {
-    int postId, userId;
-    boolean approved;
-    String title, content;
-    LocalDateTime dateAdded, publishDate, expireDate;
+    private int postId, userId;
+    private boolean approved;
+    private String title, content;
+    private LocalDateTime dateAdded, publishDate, expireDate;
 
     public Post(int postId, int userId, boolean approved, String title, String content, LocalDateTime dateAdded, LocalDateTime publishDate, LocalDateTime expireDate) {
         this.postId = postId;

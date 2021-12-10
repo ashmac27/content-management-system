@@ -23,39 +23,44 @@ public class HashtagDAODatabase implements HashtagDAO {
         this.template = template;
     }
 
+    // Gets all hashtag
     @Override
     public List<Hashtag> getAllHashtags() {
         return template.query("SELECT * FROM hashtags", new HashtagRowMapper());
     }
 
+    // Gets all unique tags
     @Override
     public List<Hashtag> getAllUniqueHashtags() {
         return template.query("SELECT DISTINCT LOWER(Tag) AS Tag FROM hashtags", new HashtagRowMapper());
     }
 
+    // Gets all the hashtag from a post
     @Override
     public List<Hashtag> getHashtagsByPostId(int postId) {
         return template.query("SELECT * FROM hashtags WHERE PostId = ?", new HashtagRowMapper(), postId);
     }
 
-    // TODO: Do we need this?
+    // Gets a list of hashtag with the same name
     @Override
     public List<Hashtag> getHashtagListByTag(String tag) {
         return template.query("SELECT * FROM hashtags WHERE LOWER(Tag) = LOWER( ? )", new HashtagRowMapper(), tag);
     }
 
-    // TODO: Do we need this?
+    // Check if the tag exists
     @Override
     public boolean hashtagExists(Hashtag hashtag) {
         return template.query("SELECT * FROM hashtags WHERE PostId = ? AND LOWER(Tag) = LOWER( ? )", new HashtagRowMapper(), hashtag.getPostId(), hashtag.getTag()).size() > 0;
     }
 
+    // Adds a hashtag
     @Override
     public Hashtag add(Hashtag hashtag) {
         template.update("INSERT INTO hashtags (PostId,Tag) VALUES (?,?)", hashtag.getPostId(), hashtag.getTag());
         return hashtag;
     }
 
+    // Deletes a hashtag
     @Override
     public boolean delete(Hashtag hashtag) {
         final String sql = "DELETE FROM hashtags WHERE PostId = ? AND Tag = ?;";
@@ -63,7 +68,6 @@ public class HashtagDAODatabase implements HashtagDAO {
     }
 
     private final class HashtagRowMapper implements RowMapper<Hashtag> {
-
         @Override
         public Hashtag mapRow(ResultSet rs, int i) throws SQLException {
             return new Hashtag(rs.getInt("PostId"), rs.getString("Tag"));
