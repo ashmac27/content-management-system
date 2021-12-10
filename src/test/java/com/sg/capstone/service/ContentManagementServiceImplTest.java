@@ -44,7 +44,17 @@ class ContentManagementServiceImplTest {
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void addPost() {
-        
+        Post p = new Post();
+        p.setApproved(true);
+        p.setTitle("title");
+        p.setContent("Content");
+        assertThrows(Exception.class, () -> service.addPost(p, null));
+        p.setUserId(1); // User ID 1 should be set
+        Post newPost = service.addPost(p, null);
+        assertNotEquals(null,newPost);
+        p.setPostId(newPost.getPostId());
+        p.setDateAdded(newPost.getDateAdded());
+        assertEquals(newPost,p);
     }
     
     @Test
@@ -93,7 +103,7 @@ class ContentManagementServiceImplTest {
     @Test
     @Sql(scripts = {"file:Capstone_Schema_Test.sql","file:Capstone_data.sql"})
     void getAllPosts() {
-        
+
     }
     
     @Test
